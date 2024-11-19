@@ -133,8 +133,8 @@ def add_internship():
 
             # Create a new Internship record with user-provided internship_id
             new_internship = Internship(
-                internship_id=int(internship_id),  # Manually setting internship_id
-                student_id=session['user_id'],  # Associate with logged-in user
+                internship_id=int(internship_id), 
+                student_id=session['user_id'],  
                 start_date=start_date,
                 company_name=company_name,
                 company_address=company_address,
