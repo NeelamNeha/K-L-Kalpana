@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static\style.css">
     <title>Dashboard</title>
     <style>
         body {
@@ -28,21 +29,56 @@
             font-size: 20px;
         }
 
-        .logout-button {
-            display: block;
+        .actions {
             margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-button {
             padding: 10px 20px;
-            background-color: #ff4b5c;
-            color: white;
+            font-size: 16px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-align: center;
-            width: 100%;
+        }
+
+        .add-internship {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .add-internship:hover {
+            background-color: #0056b3;
+        }
+
+        .logout-button {
+            background-color: #ff4b5c;
+            color: white;
         }
 
         .logout-button:hover {
             background-color: #e93c4f;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
         }
     </style>
 </head>
@@ -51,16 +87,51 @@
     {% if 'user_id' in session %}
         <div class="container">
             <h1>Welcome to Your Dashboard, {{ session['name'] }}!</h1>
+            
             <div class="user-info">
                 <p><strong>Name:</strong> {{ session['name'] }}</p>
                 <p><strong>Email:</strong> {{ session['email'] }}</p>
                 <p><strong>Role:</strong> {{ session['role'] }}</p>
-                <p><strong>Phone Number:</strong> {{ session['phone_number'] }}</p>
             </div>
 
-            <form method="POST" action="{{ url_for('logout') }}">
-                <button type="submit" class="logout-button">Logout</button>
-            </form>
+            <div class="actions">
+                <form method="GET" action="{{ url_for('add_internship') }}">
+                    <button type="submit" class="action-button add-internship">Add New Internship</button>
+                </form>
+                
+                <form method="POST" action="{{ url_for('logout') }}">
+                    <button type="submit" class="action-button logout-button">Logout</button>
+                </form>
+            </div>
+
+            <!-- Display list of students or interns -->
+            {% if interns %}
+                <h2>Internship Details</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Intern Name</th>
+                            <th>Company Name</th>
+                            <th>Start Date</th>
+                            <th>City</th>
+                            <th>Stipend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for intern in interns %}
+                            <tr>
+                                <td>{{ intern.user.name }}</td>
+                                <td>{{ intern.company_name }}</td>
+                                <td>{{ intern.start_date }}</td>
+                                <td>{{ intern.city }}</td>
+                                <td>{{ intern.stipend_amount }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No internship details found.</p>
+            {% endif %}
         </div>
     {% else %}
         <div class="container">
@@ -68,6 +139,6 @@
             <a href="{{ url_for('login') }}">Login</a>
         </div>
     {% endif %}
-    
+
 </body>
 </html>
