@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .user-info {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .logout-button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff4b5c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+        }
+
+        .logout-button:hover {
+            background-color: #e93c4f;
+        }
+    </style>
+</head>
+<body>
+
+    {% if 'user_id' in session %}
+        <div class="container">
+            <h1>Welcome to Your Dashboard, {{ session['name'] }}!</h1>
+            <div class="user-info">
+                <p><strong>Name:</strong> {{ session['name'] }}</p>
+                <p><strong>Email:</strong> {{ session['email'] }}</p>
+                <p><strong>Role:</strong> {{ session['role'] }}</p>
+                <p><strong>Phone Number:</strong> {{ session['phone_number'] }}</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('logout') }}">
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="container">
+            <h1>Please log in to access the dashboard.</h1>
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
+    {% endif %}
+    
+</body>
+</html>
